@@ -548,7 +548,7 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-  return childrenSelector(arr).flat();
+  return arr.map((e) => childrenSelector(e)).flat();
 }
 
 /**
@@ -563,8 +563,13 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  let res = arr;
+  indexes.map((index) => {
+    res = res[index];
+    return index;
+  });
+  return res;
 }
 
 /**
@@ -585,8 +590,18 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const middle = arr[(arr.length - 1) / 2];
+  return middle
+    ? [
+      ...arr.slice(Math.ceil(arr.length / 2)),
+      middle,
+      ...arr.slice(0, Math.floor(arr.length / 2)),
+    ]
+    : [
+      ...arr.slice(Math.ceil(arr.length / 2)),
+      ...arr.slice(0, Math.floor(arr.length / 2)),
+    ];
 }
 
 module.exports = {
