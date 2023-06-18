@@ -224,24 +224,24 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 /**
  * Reverse the specified integer number (put all digits in reverse order)
- *
- * @param {number} num
- * @return {number}
- *
- * @example:
- *   12345 => 54321
- *   1111  => 1111
- *   87354 => 45378
- *   34143 => 34143
- */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+*
+* @param {number} num
+* @return {number}
+*
+* @example:
+*   12345 => 54321
+*   1111  => 1111
+*   87354 => 45378
+*   34143 => 34143
+*/
+function reverseInteger(num) {
+  return Number(num.toString().split('').reverse().join(''));
 }
 
 /**
@@ -264,8 +264,45 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const split = ccn.toString().split('');
+  const key = split.splice(-1).join('');
+  let payload = split.slice(0, split.length);
+
+  switch (!(payload.length % 2)) {
+    case true:
+      payload = payload.map((e, i) => {
+        if (i % 2 !== 0) {
+          return String(Number(e) * 2).split('').length === 1
+            ? String(Number(e) * 2)
+            : String(
+              Number(String(Number(e) * 2).split('')[0])
+                + Number(String(Number(e) * 2).split('')[1]),
+            );
+        }
+        return e;
+      });
+      break;
+    case false:
+      payload = payload.map((e, i) => {
+        if (i % 2 === 0) {
+          return String(Number(e) * 2).split('').length === 1
+            ? String(Number(e) * 2)
+            : String(
+              Number(String(Number(e) * 2).split('')[0])
+              + Number(String(Number(e) * 2).split('')[1]),
+            );
+        }
+        return e;
+      });
+      break;
+    default:
+      break;
+  }
+
+  return payload.reduce((a, b) => Number(b) + a, 0) % 10
+    ? 10 - (payload.reduce((a, b) => Number(b) + a, 0) % 10) === Number(key)
+    : payload.reduce((a, b) => Number(b) + a, 0) % 10 === Number(key);
 }
 
 /**
@@ -273,7 +310,7 @@ function isCreditCardNumber(/* ccn */) {
  *   step1 : find sum of all digits
  *   step2 : if sum > 9 then goto step1 otherwise return the sum
  *
- * @param {number} n
+ * @param {number}
  * @return {number}
  *
  * @example:
@@ -282,8 +319,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let res = num;
+  while (res > 9) {
+    res = String(res)
+      .split('')
+      .reduce((a, b) => Number(b) + a, 0);
+  }
+  return res;
 }
 
 /**
@@ -307,8 +350,38 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const res = {
+    '(': 0,
+    ')': 0,
+    '[': 0,
+    ']': 0,
+    '{': 0,
+    '}': 0,
+    '<': 0,
+    '>': 0,
+  };
+  str.split('').forEach((e) => {
+    if (e === '{' || e === '(' || e === '[' || e === '<') {
+      res[e] += 1;
+    } else if (e === '}' || e === ')' || e === ']' || e === '>') {
+      res[e] += 1;
+    }
+    if (
+      res[')'] > res['(']
+      || res['}'] > res['{']
+      || res[']'] > res['[']
+      || res['>'] > res['<']
+    ) {
+      res['{'] = -Infinity;
+    }
+  });
+  return (
+    res[')'] === res['(']
+    && res['}'] === res['{']
+    && res[']'] === res['[']
+    && res['>'] === res['<']
+  );
 }
 
 /**
