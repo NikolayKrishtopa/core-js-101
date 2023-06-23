@@ -350,38 +350,39 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(str) {
-  const res = {
-    '(': 0,
-    ')': 0,
-    '[': 0,
-    ']': 0,
-    '{': 0,
-    '}': 0,
-    '<': 0,
-    '>': 0,
-  };
-  str.split('').forEach((e) => {
-    if (e === '{' || e === '(' || e === '[' || e === '<') {
-      res[e] += 1;
-    } else if (e === '}' || e === ')' || e === ']' || e === '>') {
-      res[e] += 1;
-    }
-    if (
-      res[')'] > res['(']
-      || res['}'] > res['{']
-      || res[']'] > res['[']
-      || res['>'] > res['<']
-    ) {
-      res['{'] = -Infinity;
-    }
-  });
-  return (
-    res[')'] === res['(']
-    && res['}'] === res['{']
-    && res[']'] === res['[']
-    && res['>'] === res['<']
-  );
+function isBracketsBalanced(/* str */) {
+  throw new Error('Not implemented');
+  // const res = {
+  //   '(': 0,
+  //   ')': 0,
+  //   '[': 0,
+  //   ']': 0,
+  //   '{': 0,
+  //   '}': 0,
+  //   '<': 0,
+  //   '>': 0,
+  // };
+  // str.split('').forEach((e) => {
+  //   if (e === '{' || e === '(' || e === '[' || e === '<') {
+  //     res[e] += 1;
+  //   } else if (e === '}' || e === ')' || e === ']' || e === '>') {
+  //     res[e] += 1;
+  //   }
+  //   if (
+  //     res[')'] > res['(']
+  //     || res['}'] > res['{']
+  //     || res[']'] > res['[']
+  //     || res['>'] > res['<']
+  //   ) {
+  //     res['{'] = -Infinity;
+  //   }
+  // });
+  // return (
+  //   res[')'] === res['(']
+  //   && res['}'] === res['{']
+  //   && res[']'] === res['[']
+  //   && res['>'] === res['<']
+  // );
 }
 
 /**
@@ -404,8 +405,8 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return Number(num.toString(n));
 }
 
 /**
@@ -420,9 +421,22 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const splitPaths = pathes.map((p) => p.split('/'));
+  let commonPath = '';
+  for (let index = 0; index < splitPaths[0].length; index += 1) {
+    if (
+      splitPaths.every((e, i, arr) => i === 0 || e[index] === arr[i - 1][index])
+    ) {
+      commonPath += `${splitPaths[0][index]}/`;
+    } else {
+      break;
+    }
+  }
+
+  return commonPath;
 }
+
 
 /**
  * Returns the product of two specified matrixes.
